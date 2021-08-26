@@ -120,38 +120,42 @@ def checkClosedList (closedList, O):
     if O not in closedList:
         return True
 
-
 while True:
-    O = int(input())
-    D = int(input())
-    K = int(input())
-    forbidden = []
-    for i in range(K):
-        forbidden.append(int(input()))
-    if O not in forbidden and D not in forbidden:
-        break
-    else:
-        continue
-
-R = 10 ** 5
-openList = []
-closedList = []
-childList = []
-tree = N_ary_Tree()
-tree.add(O)
-
-if not O == D == K == 0:
-    while not tree.find_node(tree.root, D):
-        if checkClosedList(closedList, O) == True:
-            switchingChannels(openList, closedList, forbidden, O, childList, R)
-            if openList:
-                O = openList.pop(0)
+    R = 10 ** 5
+    openList = []
+    closedList = []
+    childList = []
+    tree = N_ary_Tree()
+    while True:
+        O, D, K = [int(x) for x in input().split()]
+        if (O and D and K) != 0:
+            linha = input().split()
+            forbidden = []
+            for i in range(K):
+                x = int(linha[i])
+                forbidden.append(x)
+            if O not in forbidden and D not in forbidden:
+                break
             else:
-                break #caso a lista esteja vazia, é que o canal destino não pode ser chegado, dai para a execução
+                continue
         else:
-            O = openList.pop(0)
-    if tree.find_node(tree.root, D):
-        print(tree.max_depth(tree.root))
+            break
+    tree.add(O)
+    if not O == D == K == 0:
+        while not tree.find_node(tree.root, D):
+            if checkClosedList(closedList, O) == True:
+                switchingChannels(openList, closedList, forbidden, O, childList, R)
+                if openList:
+                    O = openList.pop(0)
+                else:
+                    break #caso a lista esteja vazia, é que o canal destino não pode ser chegado, dai para a execução
+            else:
+                O = openList.pop(0)
+        if tree.find_node(tree.root, D):
+            print(tree.max_depth(tree.root))
+        else:
+            print(-1)
+    if (O and D and K) != 0:
+        del tree.root
     else:
-        print(-1)
-del tree.root
+        break
